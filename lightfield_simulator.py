@@ -572,26 +572,26 @@ class OBJECT_OT_render_lightfield(bpy.types.Operator):
                 depth_small = median_downsampling(depth, LF.depth_map_scale, LF.depth_map_scale)
 
             # create disparity maps
-            disp = (factor / depth - LF.baseline_x_m * LF.focal_length * max_res) / LF.focus_dist / LF.sensor_size
-            disp_small = median_downsampling(disp, LF.depth_map_scale, LF.depth_map_scale)
+            # disp = (factor / depth - LF.baseline_x_m * LF.focal_length * max_res) / LF.focus_dist / LF.sensor_size
+            # disp_small = median_downsampling(disp, LF.depth_map_scale, LF.depth_map_scale)
 
             # set disparity range for config file
-            LF.min_disp = np.floor(np.amin(disp_small) * 10) / 10 - 0.1
-            LF.max_disp = np.ceil(np.amax(disp_small) * 10) / 10 + 0.1
+            # LF.min_disp = np.floor(np.amin(disp_small) * 10) / 10 - 0.1
+            # LF.max_disp = np.ceil(np.amax(disp_small) * 10) / 10 + 0.1
 
             # save disparity files
             if camera.name == LF.get_center_camera().name:
-                write_pfm(depth, os.path.join(tgt_dir, 'gt_depth_highres.pfm'))
-                write_pfm(disp, os.path.join(tgt_dir, 'gt_disp_highres.pfm'))
+                # write_pfm(depth, os.path.join(tgt_dir, 'gt_depth_highres.pfm'))
+                # write_pfm(disp, os.path.join(tgt_dir, 'gt_disp_highres.pfm'))
                 write_pfm(depth_small, os.path.join(tgt_dir, 'gt_depth_lowres.pfm'))
-                write_pfm(disp_small, os.path.join(tgt_dir, 'gt_disp_lowres.pfm'))
+                # write_pfm(disp_small, os.path.join(tgt_dir, 'gt_disp_lowres.pfm'))
 
             if LF.save_depth_for_all_views:
                 camera_name = self.get_raw_camera_name(camera.name)
-                write_pfm(depth, os.path.join(tgt_dir, 'gt_depth_highres_%s.pfm' % camera_name))
-                write_pfm(disp, os.path.join(tgt_dir, 'gt_disp_highres_%s.pfm' % camera_name))
+                # write_pfm(depth, os.path.join(tgt_dir, 'gt_depth_highres_%s.pfm' % camera_name))
+                # write_pfm(disp, os.path.join(tgt_dir, 'gt_disp_highres_%s.pfm' % camera_name))
                 write_pfm(depth_small, os.path.join(tgt_dir, 'gt_depth_lowres_%s.pfm' % camera_name))
-                write_pfm(disp_small, os.path.join(tgt_dir, 'gt_disp_lowres_%s.pfm' % camera_name))
+                # write_pfm(disp_small, os.path.join(tgt_dir, 'gt_disp_lowres_%s.pfm' % camera_name))
 
     def fix_pixel_artefacts(self, disp, m_out_of_range, half_window=1):
         print("Fixing %d out of range pixel(s), values: %s" % (np.sum(m_out_of_range), list(disp[m_out_of_range])))
